@@ -36,10 +36,10 @@ const useStyles = makeStyles((theme) => ({
 function TableData() {
   const styles= useStyles();
   const [data, setData]= useState([]);
-  const [modalInsertar, setModalInsertar]= useState(false);
-  const [modalEditar, setModalEditar]= useState(false);
-  const [modalEliminar, setModalEliminar]= useState(false);
-  const [artistaSeleccionado, setArtistaSeleccionado]=useState({
+  const [modalInsert, setModalInsert]= useState(false);
+  const [modalEdit, setModalEdit]= useState(false);
+  const [modalDelete, setModalDelete]= useState(false);
+  const [albumSelect, setAlbumSelect]=useState({
     id: "",
     bandID: "",
     name: "",
@@ -48,7 +48,7 @@ function TableData() {
 
   const handleChange=e=>{
     const {id, value}=e.target;
-    setArtistaSeleccionado(prevState=>({
+    setAlbumSelect(prevState=>({
       ...prevState,
       [id]: value
     }));
@@ -64,82 +64,81 @@ function TableData() {
   }
 
   const peticionPost=async()=>{
-    await axios.post(baseUrl, artistaSeleccionado)
+    await axios.post(baseUrl, albumSelect)
     .then(response=>{
       setData(data.concat(response.data));
-      abrirCerrarModalInsertar();
+      openCloseModalInsert();
     }).catch(error=>{
       console.log(error);
     })
   }
 
   const peticionPut=async()=>{
-    await axios.put(baseUrl+"/"+artistaSeleccionado.id, artistaSeleccionado)
+    await axios.put(baseUrl+"/"+albumSelect.id, albumSelect)
     .then(response=>{
       var dataNueva= data;
-      dataNueva.map(artista=>{
-        if(artista.id===artistaSeleccionado.id){
-          artista.id=artistaSeleccionado.id;
-          artista.bandid=artistaSeleccionado.bandid;
-          artista.name=artistaSeleccionado.name;
-          artista.year=artistaSeleccionado.year;
+      dataNueva.map(artist=>{
+        if(artist.id===albumSelect.id){
+          artist.id=albumSelect.id;
+          artist.bandid=albumSelect.bandid;
+          artist.name=albumSelect.name;
+          artist.year=albumSelect.year;
         }
       });
       setData(dataNueva);
-      abrirCerrarModalEditar();
+      openCloseModalEdit();
     }).catch(error=>{
       console.log(error);
     })
   }
 
   const peticionDelete=async()=>{
-    await axios.delete(baseUrl+"/"+artistaSeleccionado.id)
+    await axios.delete(baseUrl+"/"+albumSelect.id)
     .then(response=>{
-      setData(data.filter(artista=>artista.id!==artistaSeleccionado.id));
-      abrirCerrarModalEliminar();
+      setData(data.filter(artist=>artist.id!==albumSelect.id));
+      openCloseModalDelete();
     }).catch(error=>{
       console.log(error);
     })
   }
 
-  const seleccionarArtista=(artista, caso)=>{
-    setArtistaSeleccionado(artista);
-    (caso==="Editar")?abrirCerrarModalEditar()
+  const seleccionarartist=(artist, caso)=>{
+    setAlbumSelect(artist);
+    (caso==="Editar")?openCloseModalEdit()
     :
-    abrirCerrarModalEliminar()
+    openCloseModalDelete()
   }
 
-  const abrirCerrarModalInsertar=()=>{
-    setModalInsertar(!modalInsertar);
+  const openCloseModalInsert=()=>{
+    setModalInsert(!modalInsert);
   }
 
-  
-  const abrirCerrarModalEditar=()=>{
-    setModalEditar(!modalEditar);
+  const openCloseModalEdit=()=>{
+    setModalEdit(!modalEdit);
   }
 
-  const abrirCerrarModalEliminar=()=>{
-    setModalEliminar(!modalEliminar);
+  const openCloseModalDelete=()=>{
+    setModalDelete(!modalDelete);
   }
 
   useEffect(()=>{
     peticionGet();
   }, [])
 
-  const bodyInsertar=(
+  const bodyInsert=(
     <div className={styles.modal}>
-      <h3>Agregar Nuevo Album</h3>
-      <TextField className={styles.inputMaterial} label="Id" name="artista" onChange={handleChange}/>
+      <h3>Insert new Album</h3>
+      <TextField className={styles.inputMaterial} label="Id" name="id" onChange={handleChange}/>
       <br />
-      <TextField className={styles.inputMaterial} label="BandID" name="pais" onChange={handleChange}/>          
+      <TextField className={styles.inputMaterial} label="BandID" name="bandid" onChange={handleChange}/>          
 <br />
-<TextField className={styles.inputMaterial} label="Ventas" name="ventas" onChange={handleChange}/>
+<TextField className={styles.inputMaterial} label="Name" name="name" onChange={handleChange}/>
       <br />
-<TextField className={styles.inputMaterial} label="Género" name="genero" onChange={handleChange}/>
+<TextField className={styles.inputMaterial} label="Year" name="year" onChange={handleChange}/>
       <br /><br />
       <div align="right">
-        <Button color="primary" onClick={()=>peticionPost()}>Insertar</Button>
-        <Button onClick={()=>abrirCerrarModalInsertar()}>Cancelar</Button>
+        <Button color="primary" onClick={()=>peticionPost()}>Insert</Button>
+        <Button onClick={()=>openCloseModalInsert()}>Cancel</Button>
       </div>
     </div>
   )
@@ -147,27 +146,27 @@ function TableData() {
   const bodyEditar=(
     <div className={styles.modal}>
       <h3>Editar Album</h3>
-      <TextField className={styles.inputMaterial} label="Album" name="artista" onChange={handleChange} value={artistaSeleccionado&&artistaSeleccionado.artista}/>
+      <TextField className={styles.inputMaterial} label="Id" name="id" onChange={handleChange} value={albumSelect&&albumSelect.artist}/>
       <br />
-      <TextField className={styles.inputMaterial} label="País" name="pais" onChange={handleChange} value={artistaSeleccionado&&artistaSeleccionado.pais}/>          
+      <TextField className={styles.inputMaterial} label="BandId" name="bandid" onChange={handleChange} value={albumSelect&&albumSelect.pais}/>          
 <br />
-<TextField className={styles.inputMaterial} label="Ventas" name="ventas" onChange={handleChange} value={artistaSeleccionado&&artistaSeleccionado.ventas}/>
+<TextField className={styles.inputMaterial} label="Name" name="name" onChange={handleChange} value={albumSelect&&albumSelect.ventas}/>
       <br />
-<TextField className={styles.inputMaterial} label="Género" name="genero" onChange={handleChange} value={artistaSeleccionado&&artistaSeleccionado.genero}/>
+<TextField className={styles.inputMaterial} label="Year" name="year" onChange={handleChange} value={albumSelect&&albumSelect.genero}/>
       <br /><br />
       <div align="right">
-        <Button color="primary" onClick={()=>peticionPut()}>Editar</Button>
-        <Button onClick={()=>abrirCerrarModalEditar()}>Cancelar</Button>
+        <Button color="primary" onClick={()=>peticionPut()}>Edit</Button>
+        <Button onClick={()=>openCloseModalEdit()}>Cancel</Button>
       </div>
     </div>
   )
 
   const bodyEliminar=(
     <div className={styles.modal}>
-      <p>Estás seguro que deseas eliminar el album <b>{artistaSeleccionado && artistaSeleccionado.artista}</b>? </p>
+      <p>Are you sure you want to delete the album? <b>{albumSelect && albumSelect.artist}</b>? </p>
       <div align="right">
-        <Button color="secondary" onClick={()=>peticionDelete()}>Sí</Button>
-        <Button onClick={()=>abrirCerrarModalEliminar()}>No</Button>
+        <Button color="secondary" onClick={()=>peticionDelete()}>Yes</Button>
+        <Button onClick={()=>openCloseModalDelete()}>No</Button>
 
       </div>
 
@@ -177,51 +176,51 @@ function TableData() {
   return (
     <div className="App">
       <br />
-      <Button onClick={()=>abrirCerrarModalInsertar()}>Insertar Album</Button>
+      <Button onClick={()=>openCloseModalInsert()}>Insert new Album</Button>
       <br /><br />
      <MaterialTable
           columns={columns}
           data={data}
-          title="Albums!"  
+          title="Albums by API"  
+          /*
           actions={[
             {
               icon: 'edit',
               tooltip: 'Editar Album',
-              onClick: (event, rowData) => seleccionarArtista(rowData, "Editar")
+              onClick: (event, rowData) => seleccionarartist(rowData, "Editar")
             },
             {
               icon: 'delete',
               tooltip: 'Eliminar Album',
-              onClick: (event, rowData) => seleccionarArtista(rowData, "Eliminar")
+              onClick: (event, rowData) => seleccionarartist(rowData, "Eliminar")
             }
           ]}
+          */
           options={{
             actionsColumnIndex: -1,
           }}
           localization={{
             header:{
-              actions: "Acciones"
+              actions: "Actions"
             }
           }}
         />
 
-
         <Modal
-        open={modalInsertar}
-        onClose={abrirCerrarModalInsertar}>
-          {bodyInsertar}
+        open={modalInsert}
+        onClose={openCloseModalInsert}>
+          {bodyInsert}
         </Modal>
-
         
         <Modal
-        open={modalEditar}
-        onClose={abrirCerrarModalEditar}>
+        open={modalEdit}
+        onClose={openCloseModalEdit}>
           {bodyEditar}
         </Modal>
 
         <Modal
-        open={modalEliminar}
-        onClose={abrirCerrarModalEliminar}>
+        open={modalDelete}
+        onClose={openCloseModalDelete}>
           {bodyEliminar}
         </Modal>
     </div>

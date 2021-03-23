@@ -1,4 +1,4 @@
-import { authenticationService } from '../_services';
+import { authenticationService } from '../_services/authentication.service';
 
 export function authHeader() {
     const currentUser = authenticationService.currentUserValue;

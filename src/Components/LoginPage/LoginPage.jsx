@@ -1,14 +1,12 @@
 import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-
-import { authenticationService } from '../_services';
+import { authenticationService } from '../../_services/authentication.service';
 
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
 
-        // redirect to home if already logged in
         if (authenticationService.currentUserValue) { 
             this.props.history.push('/');
         }

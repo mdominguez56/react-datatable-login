@@ -1,7 +1,7 @@
 import React from 'react';
-import TableData from '../_datatable/datatable'
-
-import { userService, authenticationService } from '../_services';
+import TableData from '../../_datatable/DataTable'
+import { userService } from '../../_services/user.service';
+import { authenticationService } from '../../_services/authentication.service';
 
 class HomePage extends React.Component {
     constructor(props) {
