@@ -25,7 +25,6 @@ export function configureFakeBackend() {
                 function ok(body) {
                     resolve({ ok: true, text: () => Promise.resolve(JSON.stringify(body)) })
                 }
-
                 function unauthorised() {
                     resolve({ status: 401, text: () => Promise.resolve(JSON.stringify({ message: 'Unauthorised' })) })
                 }
