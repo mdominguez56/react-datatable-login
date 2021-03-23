@@ -14,7 +14,7 @@ const baseUrl="https://my-json-server.typicode.com/improvein/dev-challenge/album
 const useStyles = makeStyles((theme) => ({
   modal: {
     position: 'absolute',
-    width: 400,
+    width: 500,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -158,9 +158,9 @@ function TableData() {
   )
   return (
     <div className="App">
-      <br />
-      <Button onClick={()=>openCloseModalInsert()}>Insert new Album</Button>
-      <br /><br />
+      {/* This functionality is being developed!
+        <Button onClick={()=>openCloseModalInsert()}>Insert new Album</Button>
+        */}
      <MaterialTable
           columns={columns}
           data={data}

@@ -20,8 +20,9 @@ class HomePage extends React.Component {
         return (
             <div>
                 <h1>Hi {currentUser.firstName}!</h1>
-                <p>You're logged in with React & JWT!!</p>
-                <h3>Users from secure api end point:</h3>
+                <p>You're logged. I hope you enjoy it!</p>
+                <TableData />
+                <h3>Online users:</h3>
                 {users &&
                     <ul>
                         {users.map(user =>
@@ -29,7 +30,6 @@ class HomePage extends React.Component {
                         )}
                     </ul>
                 }
-                <TableData />
             </div>
         );
     }
