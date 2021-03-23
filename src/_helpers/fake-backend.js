@@ -1,13 +1,10 @@
 export function configureFakeBackend() {
-    let users = [{ id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'User' }];
+    let users = [{ id: 1, username: 'Nubceo', password: '123456', firstName: 'Nubceo', lastName: 'User' }];
     let realFetch = window.fetch;
     window.fetch = function (url, opts) {
         const isLoggedIn = opts.headers['Authorization'] === 'Bearer fake-jwt-token';
-
         return new Promise((resolve, reject) => {
-            // wrap in timeout to simulate server api call
             setTimeout(() => {
-                // authenticate - public
                 if (url.endsWith('/users/authenticate') && opts.method === 'POST') {
                     const params = JSON.parse(opts.body);
                     const user = users.find(x => x.username === params.username && x.password === params.password);
@@ -20,18 +17,11 @@ export function configureFakeBackend() {
                         token: 'fake-jwt-token'
                     });
                 }
-
-                
                 if (url.endsWith('/users') && opts.method === 'GET') {
                     if (!isLoggedIn) return unauthorised();
                     return ok(users);
                 }
-
-                
                 realFetch(url, opts).then(response => resolve(response));
-
-                
-
                 function ok(body) {
                     resolve({ ok: true, text: () => Promise.resolve(JSON.stringify(body)) })
                 }
@@ -39,7 +29,6 @@ export function configureFakeBackend() {
                 function unauthorised() {
                     resolve({ status: 401, text: () => Promise.resolve(JSON.stringify({ message: 'Unauthorised' })) })
                 }
-
                 function error(message) {
                     resolve({ status: 400, text: () => Promise.resolve(JSON.stringify({ message })) })
                 }

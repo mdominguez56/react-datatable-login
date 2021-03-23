@@ -14,16 +14,13 @@ class App extends React.Component {
             currentUser: null
         };
     }
-
     componentDidMount() {
         authenticationService.currentUser.subscribe(x => this.setState({ currentUser: x }));
     }
-
     logout() {
         authenticationService.logout();
         history.push('/login');
     }
-
     render() {
         const { currentUser } = this.state;
         return (
@@ -52,5 +49,4 @@ class App extends React.Component {
         );
     }
 }
-
 export { App }; 

@@ -11,13 +11,12 @@ class LoginPage extends React.Component {
             this.props.history.push('/');
         }
     }
-
     render() {
         return (
             <div>
                 <div className="alert alert-info">
-                    Username: test<br />
-                    Password: test
+                    Username: Nubceo<br />
+                    Password: 123456
                 </div>
                 <h2>Login</h2>
                 <Formik
@@ -69,5 +68,4 @@ class LoginPage extends React.Component {
         )
     }
 }
-
 export { LoginPage }; 

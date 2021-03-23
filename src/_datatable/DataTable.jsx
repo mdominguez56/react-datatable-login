@@ -11,8 +11,6 @@ const columns= [
   { title: 'Year', field: 'year', type: 'numeric'}
 ];
 const baseUrl="https://my-json-server.typicode.com/improvein/dev-challenge/albums";
-
-
 const useStyles = makeStyles((theme) => ({
   modal: {
     position: 'absolute',
@@ -32,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%'
   }
 }));
-
 function TableData() {
   const styles= useStyles();
   const [data, setData]= useState([]);
@@ -45,7 +42,6 @@ function TableData() {
     name: "",
     year: ""
   })
-
   const handleChange=e=>{
     const {id, value}=e.target;
     setAlbumSelect(prevState=>({
@@ -53,7 +49,6 @@ function TableData() {
       [id]: value
     }));
   }
-
   const peticionGet=async()=>{
     await axios.get(baseUrl)
     .then(response=>{
@@ -62,7 +57,6 @@ function TableData() {
       console.log(error);
     })
   }
-
   const peticionPost=async()=>{
     await axios.post(baseUrl, albumSelect)
     .then(response=>{
@@ -72,7 +66,6 @@ function TableData() {
       console.log(error);
     })
   }
-
   const peticionPut=async()=>{
     await axios.put(baseUrl+"/"+albumSelect.id, albumSelect)
     .then(response=>{
@@ -91,7 +84,6 @@ function TableData() {
       console.log(error);
     })
   }
-
   const peticionDelete=async()=>{
     await axios.delete(baseUrl+"/"+albumSelect.id)
     .then(response=>{
@@ -101,30 +93,26 @@ function TableData() {
       console.log(error);
     })
   }
-
+  /*
   const seleccionarartist=(artist, caso)=>{
     setAlbumSelect(artist);
     (caso==="Editar")?openCloseModalEdit()
     :
     openCloseModalDelete()
   }
-
+  */
   const openCloseModalInsert=()=>{
     setModalInsert(!modalInsert);
   }
-
   const openCloseModalEdit=()=>{
     setModalEdit(!modalEdit);
   }
-
   const openCloseModalDelete=()=>{
     setModalDelete(!modalDelete);
   }
-
   useEffect(()=>{
     peticionGet();
   }, [])
-
   const bodyInsert=(
     <div className={styles.modal}>
       <h3>Insert new Album</h3>
@@ -142,17 +130,16 @@ function TableData() {
       </div>
     </div>
   )
-
-  const bodyEditar=(
+  const bodyEdit=(
     <div className={styles.modal}>
       <h3>Editar Album</h3>
       <TextField className={styles.inputMaterial} label="Id" name="id" onChange={handleChange} value={albumSelect&&albumSelect.artist}/>
       <br />
       <TextField className={styles.inputMaterial} label="BandId" name="bandid" onChange={handleChange} value={albumSelect&&albumSelect.pais}/>          
-<br />
-<TextField className={styles.inputMaterial} label="Name" name="name" onChange={handleChange} value={albumSelect&&albumSelect.ventas}/>
       <br />
-<TextField className={styles.inputMaterial} label="Year" name="year" onChange={handleChange} value={albumSelect&&albumSelect.genero}/>
+      <TextField className={styles.inputMaterial} label="Name" name="name" onChange={handleChange} value={albumSelect&&albumSelect.ventas}/>
+      <br />
+      <TextField className={styles.inputMaterial} label="Year" name="year" onChange={handleChange} value={albumSelect&&albumSelect.genero}/>
       <br /><br />
       <div align="right">
         <Button color="primary" onClick={()=>peticionPut()}>Edit</Button>
@@ -160,19 +147,15 @@ function TableData() {
       </div>
     </div>
   )
-
-  const bodyEliminar=(
+  const bodyDelete=(
     <div className={styles.modal}>
       <p>Are you sure you want to delete the album? <b>{albumSelect && albumSelect.artist}</b>? </p>
       <div align="right">
         <Button color="secondary" onClick={()=>peticionDelete()}>Yes</Button>
         <Button onClick={()=>openCloseModalDelete()}>No</Button>
-
       </div>
-
     </div>
   )
-
   return (
     <div className="App">
       <br />
@@ -205,26 +188,22 @@ function TableData() {
             }
           }}
         />
-
         <Modal
         open={modalInsert}
         onClose={openCloseModalInsert}>
           {bodyInsert}
         </Modal>
-        
         <Modal
         open={modalEdit}
         onClose={openCloseModalEdit}>
-          {bodyEditar}
+          {bodyEdit}
         </Modal>
-
         <Modal
         open={modalDelete}
         onClose={openCloseModalDelete}>
-          {bodyEliminar}
+          {bodyDelete}
         </Modal>
     </div>
   );
 }
-
 export default TableData;

@@ -12,11 +12,9 @@ class HomePage extends React.Component {
             users: null
         };
     }
-
     componentDidMount() {
         userService.getAll().then(users => this.setState({ users }));
     }
-
     render() {
         const { currentUser, users } = this.state;
         return (
@@ -36,5 +34,4 @@ class HomePage extends React.Component {
         );
     }
 }
-
 export { HomePage };
